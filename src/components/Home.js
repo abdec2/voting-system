@@ -59,7 +59,11 @@ function Home() {
             const final = []
             countries.map(item => {
                 let res = data.filter(d => d.code === item.code)
-                final.push({ code: item.code, country: item.country, vote: res.length })
+                if(item.code === 'BH') {
+                    final.push({ code: item.code, country: item.country, vote: res.length -1 })
+                } else {
+                    final.push({ code: item.code, country: item.country, vote: res.length })
+                }
             })
             setVotes([...final])
 
