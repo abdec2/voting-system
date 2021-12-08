@@ -37,6 +37,8 @@ function Home() {
     const showresultCollection = collection(db, 'showResult')
     const [showResult, setShowResult] = useState(false)
     const [totalVotes, setTotalVotes] = useState(0)
+    const [maxVoteObj, setMaxVoteObj] = useState({})
+
 
     useEffect(() => {
 
@@ -60,9 +62,27 @@ function Home() {
                 final.push({ code: item.code, country: item.country, vote: res.length })
             })
             setVotes([...final])
+
+            const arr = {
+                code: '',
+                country: '',
+                vote: -Infinity
+            }
+    
+            final.forEach(item => {
+                if (item.vote > arr.vote) {
+                    arr.code = item.code;
+                    arr.country = item.country;
+                    arr.vote = item.vote;
+                }
+            })
+            setMaxVoteObj(arr)
         }
 
         getVotingData()
+
+        
+
 
     }, [])
 
@@ -95,24 +115,45 @@ function Home() {
                         <tbody>
                             {votes.map((item, i) => {
                                 if (i < 9) {
-                                    return (
-                                        <tr key={i}>
-                                            <td style={{ width: '20px' }}>
-                                                {i + 1}
-                                            </td>
-                                            <td style={{ width: '300px' }}>
-                                                <ReactCountryFlag countryCode={item.code} svg /> {item.country}
-                                            </td>
-                                            <td style={{ width: '50px' }}>
-                                                {(!showResult) ? 0 : item.vote}
-                                            </td>
-                                            <td>
-                                                <Progress
-                                                    value={(!showResult) ? 0 : item.vote / totalVotes * 100}
-                                                />
-                                            </td>
-                                        </tr>
-                                    )
+                                    if (item.code === maxVoteObj.code && showResult) {
+                                        return (
+                                            <tr key={i} className="highlight">
+                                                <td style={{ width: '20px' }}>
+                                                    {i + 1}
+                                                </td>
+                                                <td style={{ width: '300px' }}>
+                                                    <ReactCountryFlag countryCode={item.code} svg /> {item.country}
+                                                </td>
+                                                <td style={{ width: '50px' }}>
+                                                    {(!showResult) ? 0 : item.vote}
+                                                </td>
+                                                <td>
+                                                    <Progress
+                                                        value={(!showResult) ? 0 : item.vote / totalVotes * 100}
+                                                    />
+                                                </td>
+                                            </tr>
+                                        )
+                                    } else {
+                                        return (
+                                            <tr key={i}>
+                                                <td style={{ width: '20px' }}>
+                                                    {i + 1}
+                                                </td>
+                                                <td style={{ width: '300px' }}>
+                                                    <ReactCountryFlag countryCode={item.code} svg /> {item.country}
+                                                </td>
+                                                <td style={{ width: '50px' }}>
+                                                    {(!showResult) ? 0 : item.vote}
+                                                </td>
+                                                <td>
+                                                    <Progress
+                                                        value={(!showResult) ? 0 : item.vote / totalVotes * 100}
+                                                    />
+                                                </td>
+                                            </tr>
+                                        )
+                                    }
                                 }
                             }
                             )}
