@@ -8,7 +8,7 @@ import logo from './img/logo.png'
 
 function App() {
   return (
-    <div className="App" style={{ backgroundImage: 'url(/images/bg.jpg)', backgroundPosition: 'center', backgroundSize: 'cover' }}>
+    <div className="App" style={{ backgroundImage: 'url(/images/bg.jpg)',height: '100vh', backgroundPosition: 'center', backgroundSize: 'cover' }}>
       <div className="header-logo">
         <img src={logo} alt="logo" />
       </div>
