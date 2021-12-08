@@ -68,7 +68,7 @@ function Home() {
                 country: '',
                 vote: -Infinity
             }
-    
+
             final.forEach(item => {
                 if (item.vote > arr.vote) {
                     arr.code = item.code;
@@ -81,7 +81,7 @@ function Home() {
 
         getVotingData()
 
-        
+
 
 
     }, [])
@@ -181,24 +181,45 @@ function Home() {
                         <tbody>
                             {votes.map((item, i) => {
                                 if (i > 8) {
-                                    return (
-                                        <tr key={i}>
-                                            <td style={{ width: '20px' }}>
-                                                {i + 1}
-                                            </td>
-                                            <td style={{ width: '300px' }}>
-                                                <ReactCountryFlag countryCode={item.code} svg /> {item.country}
-                                            </td>
-                                            <td style={{ width: '50px' }}>
-                                                {(!showResult) ? 0 : item.vote}
-                                            </td>
-                                            <td>
-                                                <Progress
-                                                    value={(!showResult) ? 0 : item.vote / totalVotes * 100}
-                                                />
-                                            </td>
-                                        </tr>
-                                    )
+                                    if (item.code === maxVoteObj.code && showResult) {
+                                        return (
+                                            <tr key={i} className="highlight">
+                                                <td style={{ width: '20px' }}>
+                                                    {i + 1}
+                                                </td>
+                                                <td style={{ width: '300px' }}>
+                                                    <ReactCountryFlag countryCode={item.code} svg /> {item.country}
+                                                </td>
+                                                <td style={{ width: '50px' }}>
+                                                    {(!showResult) ? 0 : item.vote}
+                                                </td>
+                                                <td>
+                                                    <Progress
+                                                        value={(!showResult) ? 0 : item.vote / totalVotes * 100}
+                                                    />
+                                                </td>
+                                            </tr>
+                                        )
+                                    } else {
+                                        return (
+                                            <tr key={i}>
+                                                <td style={{ width: '20px' }}>
+                                                    {i + 1}
+                                                </td>
+                                                <td style={{ width: '300px' }}>
+                                                    <ReactCountryFlag countryCode={item.code} svg /> {item.country}
+                                                </td>
+                                                <td style={{ width: '50px' }}>
+                                                    {(!showResult) ? 0 : item.vote}
+                                                </td>
+                                                <td>
+                                                    <Progress
+                                                        value={(!showResult) ? 0 : item.vote / totalVotes * 100}
+                                                    />
+                                                </td>
+                                            </tr>
+                                        )
+                                    }
                                 }
                             }
                             )}

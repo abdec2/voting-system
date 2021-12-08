@@ -12,7 +12,7 @@ function Admin() {
     const [votes, setVotes] = useState([])
     const votesCollection = collection(db, 'votes')
     const voteStatusCollection = collection(db, "votingstatus")
-    const showresultCollection  = collection(db, 'showResult')
+    const showresultCollection = collection(db, 'showResult')
     const [totalVotes, setTotalVotes] = useState(0)
     const [voteStatusID, setVoteStatusID] = useState('')
     const [showResult, setShowResult] = useState(false)
@@ -44,7 +44,7 @@ function Admin() {
         setVotingStart(true)
 
         const statusDoc = doc(db, "votingstatus", voteStatusID)
-        const newField = {status: 1}
+        const newField = { status: 1 }
         await updateDoc(statusDoc, newField)
 
 
@@ -55,7 +55,7 @@ function Admin() {
         setVotingStart(false)
 
         const statusDoc = doc(db, "votingstatus", voteStatusID)
-        const newField = {status: 0}
+        const newField = { status: 0 }
         await updateDoc(statusDoc, newField)
     }
 
@@ -63,23 +63,24 @@ function Admin() {
         const record = await getDocs(showresultCollection)
         const id = record.docs.map(doc => doc.id)
         const showResultDoc = doc(db, "showResult", id[0])
-        const newField = {result: !showResult}
+        const newField = { result: !showResult }
         setShowResult(!showResult)
         await updateDoc(showResultDoc, newField)
     }
 
 
-    useEffect(()=> {
+    useEffect(() => {
         onSnapshot(votesCollection, (snapshot) => {
-            const data = snapshot.docs.map((doc) => ({...doc.data(), id: doc.id}))
-            console.log(data)   
-            setTotalVotes(data.reduce((a,b) => ({vote: a.vote + b.vote})).vote)
-            const final = []
-            countries.map(item => {
-                let res = data.filter(d => d.code === item.code)
-                final.push({code: item.code, country: item.country, vote: res.length})
-            })
-            setVotes([...final])
+            const data = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+            if (data.length > 0) {
+                setTotalVotes(data.reduce((a, b) => ({ vote: a.vote + b.vote })).vote)
+                const final = []
+                countries.map(item => {
+                    let res = data.filter(d => d.code === item.code)
+                    final.push({ code: item.code, country: item.country, vote: res.length })
+                })
+                setVotes([...final])
+            }
         })
 
         const getVoteStatusID = async () => {
@@ -89,7 +90,7 @@ function Admin() {
         }
 
         getVoteStatusID()
-        
+
     }, [])
 
     return (
@@ -98,7 +99,7 @@ function Admin() {
                 <Col>
                     <div className="d-flex mb-3 justify-content-around">
                         <Button disabled={votingStart} color="primary" className="w-25" onClick={startVoting}>
-                            Start Voting 
+                            Start Voting
                         </Button>
                         <Button disabled={!votingStart} className="w-25 btn-secondary" onClick={endVoting}>
                             End Voting
