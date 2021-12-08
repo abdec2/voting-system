@@ -194,7 +194,7 @@ function Admin() {
                                             </td>
                                             <td>
                                                 <Progress
-                                                    value={item.vote}
+                                                    value={item.vote / totalVotes * 100}
                                                 />
                                             </td>
                                         </tr>
