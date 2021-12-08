@@ -1,0 +1,13 @@
+
+
+
+.header-logo {
+    width: 300px;
+    display: block;
+    margin: auto;
+    padding: 10px;
+}
+
+.header-logo img {
+    width: 100%;
+}
